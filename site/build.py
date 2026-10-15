@@ -187,6 +187,7 @@ def layout(*, key, path, title, desc, body, hero=False, schema=None, og="/img/he
 <nav class="menu" id="menu" aria-label="Мобилно меню">
   {menu}
   <div class="contact"><a href="{PHONE_HREF}">{PHONE}</a><a href="mailto:{EMAIL}">{EMAIL}</a></div>
+  <div class="menu-lang" role="group" aria-label="Език"><a class="menu-lang-tab" href="{path}" data-lang="bg" hreflang="bg" lang="bg" aria-current="true">BG</a><a class="menu-lang-tab" href="/en{path}" data-lang="en" hreflang="en" lang="en">EN</a></div>
 </nav>
 <nav class="lang t-tabs" aria-label="Език" data-lang-switch><span class="t-tabs-pill" aria-hidden="true"></span><a class="t-tab" href="{path}" data-lang="bg" hreflang="bg" lang="bg" aria-current="true">BG</a><a class="t-tab" href="/en{path}" data-lang="en" hreflang="en" lang="en">EN</a></nav>
 {main_open}
@@ -238,10 +239,10 @@ def footer():
     <a class="footer-logo" href="/" aria-label="Стефанов НП, начало">{emblem("", "Stefanoff")}</a>
     <div class="footer-grid">
       <div>
-        <p class="lbl">Адрес:</p><p>с. Бозвелийско, общ. Провадия,<br>обл. Варна, България</p>
-        <p class="lbl" style="margin-top:var(--s-6)">Контакт:</p><p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="{PHONE_HREF}">{PHONE}</a></p>
+        <p class="lbl">Адрес</p><p>с. Бозвелийско, общ. Провадия,<br>обл. Варна, България</p>
+        <p class="lbl" style="margin-top:var(--s-6)">Контакт</p><p><a href="mailto:{EMAIL}">{EMAIL}</a><br><a href="{PHONE_HREF}">{PHONE}</a></p>
       </div>
-      <div><p class="lbl">Работно време:</p><p>Понеделник – петък<br>08:00 – 18:00</p></div>
+      <div><p class="lbl">Работно време</p><p>Понеделник – петък<br>08:00 – 18:00</p></div>
       <div><p class="lbl">Продукти</p><ul>{prods}</ul></div>
       <div><p class="lbl">Компания</p><ul>
         <li><a href="/fermata.html">Фермата</a></li><li><a href="/sertifikati.html">Сертификати</a></li>
@@ -458,7 +459,7 @@ def page_home():
       <div class="rv d1"><p class="t-body">Пет продукта от собствена суровина. Всеки има спецификация, а с офертата изпращаме сертификат и анализ от последната реколта.</p><div class="row-actions"><a class="btn btn-primary" href="/produkti.html">Всички продукти {ARROW}</a></div></div>
     </div>
   </div>
-  <div class="wrap"><div class="tiles tiles-3" data-drift-row>{"".join(product_tile(BY_SLUG[s], i) for i, s in enumerate(FEATURED))}</div>
+  <div class="wrap"><div class="tiles tiles-3 tiles-snap" data-drift-row>{"".join(product_tile(BY_SLUG[s], i) for i, s in enumerate(FEATURED))}</div>
     <div class="tiles-more rv"><a class="btn btn-secondary" href="/produkti.html">Всички продукти <span class="count">{len(PRODUCTS)}</span> {ARROW}</a></div></div>
 </section>
 
@@ -701,7 +702,7 @@ def bag_drawer():
 
 
 def season_html(rows):
-    head = "".join(f'<span class="m">{m}</span>' for m in MONTHS)
+    head = "".join(f'<span class="m"><span class="ml">{m}</span><span class="ms">{m[0]}</span></span>' for m in MONTHS)
     body = "".join(
         f'<div class="cal-row"><span class="cal-lbl">{lbl}{" " + tbc("*") if unsure else ""}</span>'
         f'<span class="cal-track" style="--a:{a};--b:{b_}"><span class="cal-bar"></span></span></div>'
@@ -752,7 +753,7 @@ def page_product(p):
               + "".join(f'<figure class="shot shot-ph" data-shot="{i + 1}"><img src="/img/mark-line-white.png" alt="" width="400" height="400"><figcaption><span class="t-label">{t}</span><span class="t-small">{ph}</span></figcaption></figure>' for i, (t, ph) in enumerate(shots)))
     schema = {"@context": "https://schema.org", "@type": "Product", "name": p["name"], "description": strip(p["lead"]),
               "image": f"{SITE}/img/{p['img']}", "brand": {"@type": "Brand", "name": "Стефанов НП"}, "countryOfOrigin": "BG"}
-    sticky = f'''<div class="sticky-buy" data-sticky-buy><span class="sb-price"><strong data-unit-price>{money(best)}</strong> {per_txt(u)}</span><button class="btn btn-primary" type="button" data-buy-proxy>Добавете {ico("plus")}</button></div>'''
+    sticky = f'''<div class="sticky-buy is-hidden" data-sticky-buy><span class="sb-price"><strong data-unit-price>{money(best)}</strong> {per_txt(u)}</span><button class="btn btn-primary" type="button" data-buy-proxy>Добавете {ico("plus")}</button></div>'''
     body = f"""<section class="section tight"><div class="wrap">
   <div class="pdp pdp-shop" data-pdp="{p['slug']}">
     <div class="gallery rv">
@@ -890,7 +891,7 @@ def page_quote():
             <div class="field"><label for="quantity">Количество</label><div class="qty"><input id="quantity" name="quantity" type="text" inputmode="decimal" autocomplete="off" placeholder="2,5" required><span class="units" role="radiogroup" aria-label="Мерна единица">{units}</span></div>{err}</div>
             <div class="field"><label for="country">Държава на доставка</label><input id="country" name="country" type="text" autocomplete="country-name" value="България" required>{err}</div>
           </div>
-          <div class="field"><label for="form_detail">Форма или спецификация <span class="opt">по желание</span></label><input id="form_detail" name="form_detail" type="text" autocomplete="off" placeholder="Цял плод, люспи 3 до 5 мм, нерафинирано масло"></div>
+          <div class="field"><label for="form_detail">Форма или спецификация <span class="opt">по желание</span></label><input id="form_detail" name="form_detail" type="text" autocomplete="off" placeholder="Цял плод, люспи 3–5 мм"></div>
         </fieldset>
         <fieldset class="fgroup">
           <legend class="fgroup-h">Как да се свържем с вас</legend>

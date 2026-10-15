@@ -13,7 +13,7 @@
       mProduct: "Продукт", mForm: "Форма / спецификация", mQty: "Количество", mCountry: "Държава на доставка", mCompany: "Фирма",
       mName: "Лице за контакт", mEmail: "Имейл", mPhone: "Телефон", mSubject: "Запитване",
       copied: "Копирано", copyFail: "Копирайте ръчно",
-      added: (n, pk) => `Добавено: ${n}, ${pk}`, remove: "Премахнете", fewer: "По-малко", more: "Повече", packs: "Брой опаковки",
+      added: "Добавено", remove: "Премахнете", fewer: "По-малко", more: "Повече", packs: "Брой опаковки",
       lineSub: (f, q, pk) => `${f}, ${q} × ${pk}`, packTotal: (q, pk, u, s) => `${q} × ${pk} = ${u}, ${s}`,
       bagLabel: (n) => (n ? `Запитване: ${n} ${n === 1 ? "продукт" : "продукта"}` : "Запитване: няма продукти"),
       count: (n) => (n === 1 ? "1 продукт" : `${n} продукта`), edit: "Редактирайте", inBag: "Продукти в запитването",
@@ -27,7 +27,7 @@
       mProduct: "Product", mForm: "Form / specification", mQty: "Quantity", mCountry: "Delivery country", mCompany: "Company",
       mName: "Contact person", mEmail: "Email", mPhone: "Phone", mSubject: "Enquiry",
       copied: "Copied", copyFail: "Copy it by hand",
-      added: (n, pk) => `Added: ${n}, ${pk}`, remove: "Remove", fewer: "Fewer", more: "More", packs: "Number of packs",
+      added: "Added", remove: "Remove", fewer: "Fewer", more: "More", packs: "Number of packs",
       lineSub: (f, q, pk) => `${f}, ${q} × ${pk}`, packTotal: (q, pk, u, s) => `${q} × ${pk} = ${u}, ${s}`,
       bagLabel: (n) => (n ? `Enquiry: ${n} ${n === 1 ? "product" : "products"}` : "Enquiry: no products"),
       count: (n) => (n === 1 ? "1 product" : `${n} products`), edit: "Edit", inBag: "Products in the enquiry",
@@ -198,6 +198,12 @@
       setTimeout(() => { location.href = tab.href; }, reduced ? 0 : dur);
     }));
     addEventListener("pageshow", (e) => { if (e.persisted) root.classList.remove("lang-leaving"); moveTo(active(), false); });
+    // the BG/EN pair in the mobile menu hands off through the same switch (fade, same scroll position)
+    document.querySelectorAll(".menu-lang-tab").forEach((t) => t.addEventListener("click", (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      e.preventDefault();
+      sw.querySelector(`.t-tab[data-lang="${t.dataset.lang}"]`)?.click();
+    }));
     // arrival: put the reader back in the same section, then let the fade-in play
     let saved = null;
     try { saved = JSON.parse(sessionStorage.getItem("langSwitch") || "null"); sessionStorage.removeItem("langSwitch"); } catch (_) {}
@@ -605,15 +611,17 @@
     // toast (transitions.dev "Toast")
     const toast = document.querySelector("[data-toast]");
     let toastT = 0;
-    function hideToast() { clearTimeout(toastT); toast.classList.remove("is-open"); }
-    const showToast = (msg) => {
-      toast.querySelector("[data-toast-msg]").textContent = msg;
+    function hideToast() { clearTimeout(toastT); toast.classList.remove("is-open"); root.classList.remove("toast-on"); }
+    const showToast = (name, pack) => {
+      const m = toast.querySelector("[data-toast-msg]");
+      m.replaceChildren(Object.assign(document.createElement("strong"), { textContent: name }), Object.assign(document.createElement("span"), { textContent: `${L.added}, ${pack}` }));
+      root.classList.add("toast-on");
       toast.classList.remove("is-open"); void toast.offsetWidth; toast.classList.add("is-open");
       clearTimeout(toastT); toastT = setTimeout(hideToast, 3600);
     };
     toast.addEventListener("pointerenter", () => clearTimeout(toastT));
     toast.addEventListener("pointerleave", () => { toastT = setTimeout(hideToast, 1600); });
-    const addAndTell = (s, f, p, q) => { bag.add(s, f, p, q); const pr = bag.P(s); showToast(L.added(pr.name, `${q} × ${pr.packLabels[p]}`)); };
+    const addAndTell = (s, f, p, q) => { bag.add(s, f, p, q); const pr = bag.P(s); showToast(pr.name, `${q} × ${pr.packLabels[p]}`); };
     const flash = (btn, swap) => {
       btn.classList.add("is-added"); swap?.setAttribute("data-state", "b");
       clearTimeout(btn._t); btn._t = setTimeout(() => { btn.classList.remove("is-added"); swap?.setAttribute("data-state", "a"); }, 1600);
@@ -667,7 +675,7 @@
       const sb = document.querySelector("[data-sticky-buy]");
       if (sb) {
         sb.querySelector("[data-buy-proxy]").addEventListener("click", () => { buy.requestSubmit(); });
-        if ("IntersectionObserver" in window) new IntersectionObserver(([en]) => sb.classList.toggle("is-hidden", en.isIntersecting)).observe(addBtn);
+        if ("IntersectionObserver" in window) new IntersectionObserver(([en]) => sb.classList.toggle("is-hidden", en.isIntersecting || en.boundingClientRect.top > 0)).observe(addBtn);
       }
     }
 

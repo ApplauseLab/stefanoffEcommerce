@@ -1483,3 +1483,100 @@ html.scroll-locked .toast { right: calc(var(--gutter) + var(--lock-pad, 0px)); }
 .wip-list a .ico { font-size: 1.25rem; transition: transform var(--dur-base) var(--ease); }
 .wip-list a:hover .ico { transform: translateX(0.25rem); }
 .wip-list a:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.25rem; }
+
+/* ======================================================================================
+   Mobile audit fixes (390 / 320 px)
+   ====================================================================================== */
+/* toast: product on the first line, "Добавено, 1 × 25 кг" under it (no cut-off pack size) */
+.toast { border-radius: 1rem; }
+.toast-msg { display: grid; gap: 1px; white-space: normal; overflow: visible; line-height: 1.3; min-width: 0; }
+.toast-msg strong { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.toast-msg span { color: var(--text-on-dark-2); }
+/* menu: language pair under the contact lines */
+.menu-lang { display: flex; gap: var(--s-2); margin-top: var(--s-6); }
+.menu-lang-tab { display: grid; place-items: center; min-width: 3.5rem; min-height: 3rem; padding: 0 var(--s-4); border: 1px solid var(--rule-on-dark); border-radius: var(--r-pill);
+  font-size: var(--fs-small); font-weight: 600; text-decoration: none; color: var(--text-on-dark-2); transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+.menu-lang-tab:hover { color: var(--white); border-color: rgba(255, 255, 255, 0.6); }
+.menu-lang-tab[aria-current="true"] { background: var(--white); border-color: var(--white); color: var(--purple-500); }
+.menu-lang-tab:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.125rem; }
+/* calendar: full month names; initials on phones */
+.cal-months .ms { display: none; }
+/* larger hit area for underlined text links without moving their underline */
+.link-arrow { position: relative; }
+.link-arrow::after { content: ""; position: absolute; inset: -0.4375rem 0; }
+
+@media (max-width: 900px) {
+  /* A1: no floating language pill on phones and tablets (it lives in the menu) */
+  .lang.t-tabs { display: none; }
+  .sticky-cta, html.scroll-locked .sticky-cta, html.scroll-locked .sticky-buy { right: calc(var(--gutter) + var(--lock-pad, 0px)); }
+  /* A2: buy bar full width; the toast takes its place while it shows */
+  .sticky-buy { right: var(--gutter); }
+  .toast { bottom: var(--s-6); left: var(--gutter); right: var(--gutter); }
+  html.toast-on .sticky-buy { opacity: 0; transform: translateY(1rem); pointer-events: none; }
+  /* B: tap targets */
+  .nav-menu-btn { min-width: 2.75rem; }
+  .contact-lines a, .contact-lines span, .contact-lines button { min-height: 2.75rem; }
+  .contact-list button, .contact-list a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  .menu .contact a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+  .footer ul { gap: 0; }
+  .footer ul a { padding: 0.625rem 0; font-size: 1rem; }
+  .footer p a { display: inline-block; padding: 0.5rem 0; }
+  .toast .link-btn { min-height: 2.75rem; padding: 0 var(--s-2); }
+  .sticky-buy .btn { min-height: 2.75rem; }
+  /* G1, G2: footer labels like the other small labels; smaller emblem */
+  .footer .lbl { font-size: var(--fs-micro); font-weight: var(--w-semibold); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--accent-text, var(--accent)); margin-bottom: var(--s-3); }
+  .footer-logo { margin-bottom: var(--s-8); }
+  .footer-logo .emblem { width: 6rem; }
+  /* D4: label close to the heading, smaller gap under the gallery */
+  .pdp-shop { gap: var(--s-6); }
+  .buy .eyebrow + .buy-title { margin-top: calc(var(--s-2) - var(--s-6)); }
+  /* D5: thumbnails smaller, the main photo leads */
+  .thumbs { grid-template-columns: repeat(4, 4rem); gap: var(--s-2); }
+  /* F2 */
+  .dd-list { top: calc(100% + var(--s-3)); }
+  .dd-list[data-origin^="bottom"] { bottom: calc(100% + var(--s-3)); }
+  /* C3: era I description in mixed case on phones; the year and title keep the carved capitals */
+  .era-stone .era-text { text-transform: none; letter-spacing: 0.02em; font-size: 0.9375rem; line-height: 1.55; }
+  /* G3 */
+  .project .t-h3 { font-size: 1.25rem; line-height: 1.35; text-wrap: balance; }
+}
+@media (max-width: 600px) {
+  /* B: tap targets */
+  .tile-add { width: 2.75rem; height: 2.75rem; right: var(--s-2); bottom: var(--s-2); }
+  .pill span { min-height: 2.75rem; }
+  .unit span { min-width: 2.75rem; height: 2.5rem; }
+  .qty { padding-right: 2px; }
+  /* C1: calendar readable: initials, label above its bar */
+  .cal-months .ml { display: none; }
+  .cal-months .ms { display: inline; }
+  .cal-months .m { font-size: 0.6875rem; }
+  .cal-row { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+  .cal-head > span:first-child { display: none; }
+  .cal { gap: var(--s-4); }
+  /* C2: nothing under 11 px */
+  .tile-badge, .thumb-ph, .tour-credit { font-size: 0.6875rem; }
+  /* D1: quantity and add button on their own full-width rows, one line each */
+  .buy-row { grid-template-columns: minmax(0, 1fr); }
+  .stepper { justify-content: space-between; }
+  .stepper input { flex: 1; }
+  .buy-add { min-height: 3rem; }
+  /* D3 */
+  .buy-title { font-size: 2.25rem; }
+  /* E1: home featured tiles scroll sideways, the next one peeks in */
+  .tiles.tiles-snap { display: grid; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 78%; gap: var(--s-4);
+    overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .tiles.tiles-snap::-webkit-scrollbar { display: none; }
+  .tiles.tiles-snap > .tile { scroll-snap-align: start; translate: none; }
+  /* E2, E3 */
+  .tiles-more { justify-content: flex-start; margin-top: var(--s-10); }
+  .head { margin-bottom: var(--s-12); }
+}
+@media (max-width: 420px) {
+  /* D2: price tiers as rows: quantity left, price right */
+  .tiers { grid-template-columns: minmax(0, 1fr); }
+  .tiers li { display: flex; justify-content: space-between; align-items: baseline; padding: var(--s-3); }
+  .tiers li + li { border-left: 0; border-top: 1px solid var(--rule-on-dark); }
+  .tiers li.is-on span:first-child::after { content: none; }
+  .tiers li.is-on span:first-child::before { content: "✓ "; color: var(--accent); }
+}
