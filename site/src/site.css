@@ -1217,8 +1217,8 @@ form.quote[hidden] { display: none; }
 .tile-name a:focus-visible { outline: none; }
 .tile:has(.tile-name a:focus-visible) .tile-media { outline: 0.125rem solid var(--focus); outline-offset: 0.25rem; }
 .tile-price { margin: 0; flex: none; font-size: var(--fs-small); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.tile-forms { margin: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); font-size: var(--fs-small); color: var(--text-on-dark-2); }
-.tile-forms .sep, .eyebrow .sep { opacity: 0.5; }
+.tile-forms { margin: 0; font-size: var(--fs-small); color: var(--text-on-dark-2); }
+.tile-forms span:not(:first-child):not(.sep) { text-transform: lowercase; }   /* Bulgarian lists: lower case after a comma */
 .tiles-more { display: flex; justify-content: center; margin-top: var(--s-16); }
 .btn .count { display: inline-grid; place-items: center; min-width: 1.5rem; height: 1.5rem; padding: 0 var(--s-1); border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.14); font-size: var(--fs-micro); }
 
@@ -1275,7 +1275,7 @@ form.quote[hidden] { display: none; }
 .thumb-ph { display: grid; place-items: center; border-style: dashed; border-color: var(--rule-on-dark); background: rgba(255, 255, 255, 0.03); color: var(--text-on-dark-2); font: inherit; font-size: 0.625rem; line-height: 1.2; padding: var(--s-1); text-align: center; }
 .thumb-ph.is-on { border-style: solid; }
 .buy { display: grid; gap: var(--s-6); align-content: start; }
-.buy .eyebrow { display: flex; gap: var(--s-2); align-items: center; }
+.buy .eyebrow { display: block; }
 .buy .eyebrow a { color: inherit; text-decoration: none; }
 .buy .eyebrow a:hover { text-decoration: underline; }
 .buy-title { font-weight: var(--w-light); }

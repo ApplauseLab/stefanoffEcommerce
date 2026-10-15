@@ -425,7 +425,7 @@ def page_home():
     <div class="wrap tour-ui">
       <header class="tour-title">
         <h2 id="nature-h"><span class="l1">Булаир:</span> <span class="l2">две зони от „Натура 2000“</span></h2>
-        <p class="tour-meta"><span>42°53′ с. ш. · 27°27′ и. д.</span><span>Източна Стара планина</span></p>
+        <p class="tour-meta"><span>42°53′ с. ш., 27°27′ и. д.</span><span>Източна Стара планина</span></p>
       </header>
       <div class="tour-copy">
         <p class="tour-p tour-pa">Булаир е село в Източна Стара планина, югозападно от Варна. Тук нивите граничат с широколистни гори, тревни съобщества и храсталаци.</p>
@@ -659,7 +659,7 @@ def shop_json():
 def product_tile(p, i=0, cls=""):
     s = SHOP[p["slug"]]
     href = f"/produkti/{p['slug']}.html"
-    forms = '<span class="sep" aria-hidden="true">·</span>'.join(f"<span>{f}</span>" for f in s["forms"])
+    forms = '<span class="sep">, </span>'.join(f"<span>{f}</span>" for f in s["forms"])
     return f"""<article class="tile rv d{i % 4}{(' ' + cls) if cls else ''}">
   <div class="tile-frame">
   <a class="tile-media img-rv" href="{href}" tabindex="-1" aria-hidden="true">
@@ -760,7 +760,7 @@ def page_product(p):
       <div class="thumbs" role="group" aria-label="Снимки">{thumbs}</div>
     </div>
     <div class="buy">
-      <p class="t-micro eyebrow rv"><a href="/produkti.html#{s['cat']}">{cat}</a><span class="sep" aria-hidden="true">·</span><span>{s['badge']}</span></p>
+      <p class="t-micro eyebrow rv"><a href="/produkti.html#{s['cat']}">{cat}</a><span class="sep">, </span><span>{s['badge']}</span></p>
       <h1 class="t-h2 buy-title rv d1">{p['name']}</h1>
       <p class="t-body buy-short rv d1">{p['short']}</p>
       <div class="price rv d1">
