@@ -13,7 +13,7 @@ cp -R dist/. "$tmp/"
   git init -q && git checkout -q -b gh-pages
   git add -A
   git commit -q -m "Deploy $(date -u +%Y-%m-%dT%H:%MZ) from $(git -C "$OLDPWD" rev-parse --short HEAD 2>/dev/null || echo local)"
-  git push -q -f "$REPO" gh-pages
+  git -c http.postBuffer=524288000 push -q -f "$REPO" gh-pages
 )
 rm -rf "$tmp"
 python3 build.py >/dev/null   # back to the root-path build for serve.py
