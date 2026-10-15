@@ -4,7 +4,10 @@
 python3 build.py        # writes dist/
 python3 serve.py 4175   # http://localhost:4175
 ./deploy.sh             # publish to https://applauselab.github.io/stefanoffEcommerce/
+./deploy-netlify.sh     # publish the POC to https://stefanoff-poc.netlify.app
 ```
+
+Proof of concept on Netlify: `deploy-netlify.sh` builds with `--noindex` (robots meta, `robots.txt`, `X-Robots-Tag` header via `_headers`) and deploys `dist/` to the `stefanoff-poc` project with the Netlify CLI (log in once with `npx netlify-cli login`). `_redirects` serves the English 404 under `/en/`. The "Powered by Netlify" badge is switched off on the project (`built_with_badge_enabled: false`); it covered the BG/EN switch.
 
 Staging on GitHub Pages: `deploy.sh` builds with `--base=/stefanoffEcommerce` (every root-relative URL gets the sub-path, `<html data-base>` tells `site.js`, pages are `noindex`), pushes `dist/` to the `gh-pages` branch, then rebuilds for the local server. Source lives on `main`; the repo's `.gitignore` is an allow-list, so research, audit, screenshots and backups stay local. When the site moves to stefanoff.bg, build without `--base`.
 

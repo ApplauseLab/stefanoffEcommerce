@@ -2,7 +2,7 @@
 
 Redesign of [stefanoff.bg](https://stefanoff.bg) for Стефанов НП, a B2B supplier of organic rosehip, lavender and hawthorn from Bulgaria. Bulgarian first, with an English version at `/en/`. Products work as a quote bag: visitors add products and send them as one enquiry (no payment).
 
-**Live staging:** https://applauselab.github.io/stefanoffEcommerce/ (not indexed by search engines).
+**Proof of concept:** https://stefanoff-poc.netlify.app · **Staging:** https://applauselab.github.io/stefanoffEcommerce/ (neither is indexed by search engines).
 
 ## Build and run
 
@@ -14,11 +14,12 @@ python3 build.py          # writes site/dist/ (Bulgarian at /, English at /en/)
 python3 serve.py 4175     # http://localhost:4175
 ```
 
-## Deploy to GitHub Pages
+## Deploy
 
 ```bash
 cd site
-./deploy.sh               # builds for /stefanoffEcommerce/, pushes site/dist to the gh-pages branch, rebuilds for local use
+./deploy-netlify.sh       # Netlify POC (needs `npx netlify-cli login` once)
+./deploy.sh               # GitHub Pages: builds for /stefanoffEcommerce/, pushes site/dist to the gh-pages branch
 ```
 
 ## Layout

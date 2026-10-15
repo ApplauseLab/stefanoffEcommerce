@@ -1006,14 +1006,28 @@ def main():
     urls = "".join(f"<url><loc>{SITE}{pre}/{'' if n == 'index.html' else n}</loc></url>" for pre in ("", "/en") for n in pages if n != "404.html")
     (DIST / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>', encoding="utf-8")
     base = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--base=")), "").rstrip("/")
+    noindex = bool(base) or "--noindex" in sys.argv[1:]
+    # Netlify: English 404 under /en/ (GitHub Pages and serve.py ignore this file)
+    (DIST / "_redirects").write_text(f"{base}/en/*  {base}/en/404.html  404\n", encoding="utf-8")
     if base:
         rebase(base)
-    print(f"built {len(pages)} pages in Bulgarian and English into {DIST}" + (f", for {base}/ (staging, noindex)" if base else ""))
+    if noindex:
+        hide_from_search()
+    print(f"built {len(pages)} pages in Bulgarian and English into {DIST}" + (f", for {base}/" if base else "") + (" (staging, noindex)" if noindex else ""))
+
+
+def hide_from_search():
+    """Staging and proof-of-concept copies: keep them out of search results so they never compete with stefanoff.bg."""
+    for f in DIST.rglob("*.html"):
+        s = f.read_text(encoding="utf-8")
+        f.write_text(s.replace('<meta name="viewport"', '<meta name="robots" content="noindex, nofollow">\n<meta name="viewport"', 1), encoding="utf-8")
+    (DIST / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
+    (DIST / "_headers").write_text("/*\n  X-Robots-Tag: noindex, nofollow\n", encoding="utf-8")
 
 
 def rebase(base):
     """Staging copy served under a sub-path (GitHub Pages: /stefanoffEcommerce/). Prefixes every root-relative URL in the
-    built pages and styles, tells site.js the sub-path (<html data-base>), and keeps search engines out."""
+    built pages and styles, and tells site.js the sub-path (<html data-base>)."""
     attr = re.compile(r'(\s(?:href|src|action|poster)=")/(?!/)')
     url = re.compile(r'url\((["\']?)/(?!/)')
     for f in DIST.rglob("*.html"):
@@ -1022,11 +1036,9 @@ def rebase(base):
         s = re.sub(r'srcset="([^"]*)"', lambda m: 'srcset="' + re.sub(r'(^|,\s*)/(?!/)', lambda k: k.group(1) + base + "/", m.group(1)) + '"', s)
         s = url.sub(lambda m: f"url({m.group(1)}{base}/", s)
         s = s.replace("<html ", f'<html data-base="{base}" ', 1)
-        s = s.replace('<meta name="viewport"', '<meta name="robots" content="noindex, nofollow">\n<meta name="viewport"', 1)
         f.write_text(s, encoding="utf-8")
     for f in DIST.rglob("*.css"):
         f.write_text(url.sub(lambda m: f"url({m.group(1)}{base}/", f.read_text(encoding="utf-8")), encoding="utf-8")
-    (DIST / "robots.txt").write_text("User-agent: *\nDisallow: /\n", encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
 
 
