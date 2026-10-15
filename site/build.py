@@ -489,7 +489,24 @@ def page_home():
                   desc="От земя с история, с грижа за природата. Шипка, бял трън и лавандула от Булаир, край Хемските порти, и от област Варна. На едро, със спецификация. Поискайте оферта.")
 
 
+def page_products_wip():
+    links = "".join(f'<li><a href="/produkti/{p["slug"]}.html"><span>{p["name"]}</span>{ico("arrow-right")}</a></li>' for p in PRODUCTS)
+    body = f"""<section class="section tight"><div class="wrap">
+  <div class="page-head wip rv">
+    <p class="t-micro eyebrow wip-tag"><span class="wip-dot" aria-hidden="true"></span>В процес на разработка</p>
+    <h1 class="t-display">Продукти</h1>
+    <p class="t-body">Работим по тази страница. Дотогава можете да разгледате продуктите поотделно или да ни изпратите запитване.</p>
+  </div>
+  <ul class="wip-list rv d1">{links}</ul>
+  <div class="row-actions rv d2"><a class="btn btn-primary" href="/zapitvane.html">Поискайте оферта {ARROW}</a><a class="btn btn-secondary" href="/">Към началото</a></div>
+</div></section>"""
+    return layout(key="produkti", path="/produkti.html", body=body, title="Продукти (в процес на разработка) | Стефанов НП",
+                  desc="Био сушена шипка, шипка на прах, студено пресовано масло от шипкови семки, сушен лавандулов цвят и бял трън на едро.")
+
+
 def page_products():
+    if PRODUCTS_WIP:
+        return page_products_wip()
     trust = "".join(f'<li>{ico(i)}<span>{t}</span></li>' for i, t in [("test-tube", tbc("Мостра при запитване")), ("files", "Спецификация и документи с всяка оферта"), ("clock", tbc("Отговор до един работен ден"))])
     tabs = "".join(f'<a class="t-tab" href="#{k}" data-chapter-tab="{k}">{n}</a>' for k, n, *_ in CATS)
     chapters = []
@@ -623,6 +640,7 @@ SHOP = {
     "bial-trun": {"cat": "bial-trun", "badge": "Скоро", "forms": ["Цвят", "Плод"], "unit": "кг", "packs": [1, 5, 25, 250], "def": 2, "tiers": [(1, 15.0), (25, 12.6), (250, 10.2)]},
 }
 FEATURED = ["shipka-sushena", "maslo-ot-shipka", "lavandula"]
+PRODUCTS_WIP = True   # products listing unfinished: /produkti shows a work-in-progress page (set False to restore the store)
 BY_SLUG = {p["slug"]: p for p in PRODUCTS}
 
 
