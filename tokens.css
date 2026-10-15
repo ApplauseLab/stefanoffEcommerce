@@ -1,0 +1,158 @@
+/* ==========================================================================
+   Stefanoff design tokens v1.0  (October 2026)
+   Colours taken from the live stefanoff.bg theme; derived tints are marked.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&subset=cyrillic,latin&display=swap");
+
+:root {
+  /* ---------- Colour: brand (exact values from stefanoff.bg) ---------- */
+  --purple-500: #674EA7;   /* header, footer, buttons on the old site. Brand colour */
+  --purple-600: #523E84;   /* link and hover colour on the old site */
+  --purple-700: #4D3B7D;
+  --purple-800: #312550;
+  --purple-900: #20124D;   /* deep purple, the old "Абонирай се" button */
+  --purple-300: #8E7CC3;   /* light purple, theme tint */
+  --brown-500:  #8A6552;   /* warm brown, the old go-to-top button */
+  --brown-700:  #664B3D;   /* dark brown, theme text accent */
+  --ink:        #261C17;   /* body text on the old site, warm near-black */
+  --beige:      #E0D3CC;   /* theme beige, the most used neutral in the old CSS */
+  --beige-200:  #E7DFD9;
+  --cream:      #F7F4F2;
+  --white:      #FFFFFF;
+
+  /* ---------- Colour: derived (stefanoff brown, hue 20°, lightened for dark grounds) ---------- */
+  --copper:       #F2B48F; /* accent words, icons, rules. 3.6:1 on purple-500, 4.9:1+ on purple-600 and darker */
+  --copper-light: #F8D2BF; /* accent for small text on purple-500 (4.6:1) */
+  --black:        #0B0807; /* ink taken to near black. Bands behind groups of photos, and the chat drawer */
+
+  /* ---------- Colour: roles ---------- */
+  --bg-page: linear-gradient(180deg, var(--purple-500) 0%, var(--purple-900) 42%, var(--ink) 78%);
+  --bg-light: var(--cream);
+  --text-on-dark: var(--white);
+  --text-on-dark-2: var(--beige-200);          /* 4.9:1 on purple-500 */
+  --text-on-light: var(--ink);
+  --text-on-light-2: var(--brown-700);         /* 7.3:1 on cream */
+  --accent: var(--copper);
+  --accent-text: var(--copper-light);
+  --link-on-light: var(--purple-500);          /* 6.0:1 on cream */
+  --rule-on-dark: rgba(255, 255, 255, 0.24);
+  --rule-on-light: var(--beige);
+  --input-border: var(--brown-500);            /* 4.7:1 on cream */
+  --focus: var(--copper);
+  --hero-vignette: radial-gradient(circle at 50% 50%, rgba(32, 18, 77, 0.72) 0%, rgba(32, 18, 77, 0) 34%);
+  --photo-scrim: linear-gradient(180deg, rgba(38, 28, 23, 0) 55%, rgba(38, 28, 23, 0.72) 100%);
+
+  /* ---------- Type ---------- */
+  --font: "Manrope", system-ui, sans-serif;  /* full Cyrillic + Latin */
+  --w-light: 300; --w-regular: 400; --w-medium: 500; --w-semibold: 600; --w-bold: 700;
+
+  /*                 mobile ............ desktop (1440) */
+  --fs-display:   clamp(2.5rem,   1.4rem + 4.6vw, 6.1875rem); /* 40 → 99 */
+  --fs-statement: clamp(1.875rem, 0.9rem + 4vw,   5.125rem);  /* 30 → 82 */
+  --fs-h2:        clamp(2rem,     1.4rem + 2.4vw, 3.9375rem); /* 32 → 63 */
+  --fs-h3:        clamp(1.5rem,   1.2rem + 1.2vw, 2.75rem);   /* 24 → 44 */
+  --fs-sub:       clamp(1.125rem, 1rem + 0.4vw,   1.4625rem); /* 18 → 23.4 */
+  --fs-body:      clamp(1.125rem, 1rem + 0.4vw,   1.4625rem); /* 18 → 23.4 */
+  --fs-nav:       1.125rem;                                    /* 18 */
+  --fs-button:    1rem;                                        /* 16 */
+  --fs-small:     clamp(0.875rem, 0.75rem + 0.2vw, 1rem);     /* 14 → 16 */
+  --fs-micro:     0.75rem;                                     /* 12, labels only */
+
+  --lh-display: 1.05;
+  --lh-statement: 1.45;  /* loose, like the reference */
+  --lh-heading: 1.2;
+  --lh-body: 1.8;        /* loose, like the reference */
+  --lh-ui: 1.5;
+  --tracking-display: -0.02em;
+  --tracking-label: 0.08em;
+
+  /* ---------- Space (4 px base) ---------- */
+  --s-0: 0.125rem; --s-1: 0.25rem;  --s-2: 0.5rem;  --s-3: 0.75rem; --s-4: 1rem; --s-6: 1.5rem; --s-8: 2rem;
+  --s-10: 2.5rem; --s-12: 3rem; --s-16: 4rem; --s-20: 5rem; --s-24: 6rem;
+  --s-40: 10rem;
+  /* Spacing scale = IBM Carbon (2 4 8 12 16 24 32 40 48 64 80 96 160), same values as Atlassian's 8 px scale.
+     Fluid in-between values are not used: like Carbon, layout spacing jumps a step at breakpoints (see below). */
+  --section: var(--s-20);  /* vertical rhythm between sections: 80 phone, 96 tablet, 160 desktop */
+  --gutter: var(--s-4);    /* page side padding: 16 phone, 24 tablet, 40 desktop */
+  --inset: var(--s-6);     /* text set inside a photo frame: 24 phone, 48 tablet, 64 desktop */
+  --panel: var(--s-8);     /* padding of light panels: 32 phone, 48 tablet, 80 desktop */
+  --nav-h: 4.5rem;         /* nav bar height (a component size, not spacing): 72 phone, 100 desktop */
+  --container: 106.25rem;   /* 1700 px at the base size; scales with the root size on wide screens */
+  --container-text: calc(640 * var(--u)); /* body column, 640 → 800 px */
+  --u: clamp(1px, (100vw - 5rem) / 1294, 0.078125rem); /* fluid pixel: 1 px up to a 1374 px screen, 1.25 px by 1600 px, then grows with the root size */
+
+  /* ---------- Shape ---------- */
+  --r-none: 0;        /* images, cards, sections: square, like the reference */
+  --r-input: 0.25rem;
+  --r-pill: 62.4375rem;    /* buttons, tags, language switch */
+
+  /* ---------- Motion ---------- */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);       /* default, heavy settle */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 200ms;   /* hover, press */
+  --dur-base: 400ms;   /* menus, toggles */
+  --dur-slow: 900ms;   /* scroll reveals */
+  --dur-logo: 1600ms;  /* logo ring draw */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* logo entrance and hover only */
+  --reveal-distance: 1.5rem;
+  /* Smooth scroll (Lenis 1.2.3): lerp 0.1, wheelMultiplier 0.7, touch stays native */
+}
+
+@media (min-width: 600px)  { :root { --section: var(--s-24); --gutter: var(--s-6); --inset: var(--s-12); --panel: var(--s-12); } }
+@media (min-width: 1100px) { :root { --section: var(--s-40); --gutter: var(--s-10); --inset: var(--s-16); --panel: var(--s-20); } }
+@media (min-width: 1300px) { :root { --nav-h: 6.25rem; } }   /* the full nav bar appears at 1300 px */
+
+/* ---------- Base ---------- */
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-weight: var(--w-light);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-on-dark);
+  background: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+.page-bg { background: var(--bg-page); }
+.surface-light { background: var(--bg-light); color: var(--text-on-light); }
+
+/* ---------- Type roles ---------- */
+.t-display   { font-size: var(--fs-display);   font-weight: var(--w-light);  line-height: var(--lh-display);   letter-spacing: var(--tracking-display); text-wrap: balance; margin: 0; }
+.t-statement { font-size: var(--fs-statement); font-weight: var(--w-light);  line-height: var(--lh-statement); letter-spacing: -0.01em; text-wrap: balance; margin: 0; }
+.t-h2        { font-size: var(--fs-h2);        font-weight: var(--w-light);  line-height: var(--lh-heading);   letter-spacing: -0.015em; text-wrap: balance; margin: 0; }
+.t-h3        { font-size: var(--fs-h3);        font-weight: var(--w-light);  line-height: var(--lh-heading);   margin: 0; }
+.t-sub       { font-size: var(--fs-sub);       font-weight: var(--w-medium); line-height: 1.3; margin: 0; }
+.t-body      { font-size: var(--fs-body);      font-weight: var(--w-light);  line-height: var(--lh-body); text-wrap: pretty; margin: 0; }
+.t-small     { font-size: var(--fs-small);     font-weight: var(--w-regular); line-height: var(--lh-ui); margin: 0; }
+.t-label     { font-size: var(--fs-small);     font-weight: var(--w-bold);   line-height: var(--lh-ui); margin: 0; }
+.t-micro     { font-size: var(--fs-micro);     font-weight: var(--w-semibold); line-height: 1.4; letter-spacing: var(--tracking-label); text-transform: uppercase; margin: 0; }
+.accent      { color: var(--accent); }
+.rule        { width: 4rem; height: 1px; background: currentColor; border: 0; margin: 0; opacity: 0.9; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--s-3);
+  min-height: 2.75rem; padding: var(--s-2) var(--s-8);
+  border-radius: var(--r-pill); border: 1px solid transparent;
+  font: inherit; font-size: var(--fs-button); font-weight: var(--w-semibold); line-height: 1.5;
+  text-decoration: none; cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.btn .arrow { transition: transform var(--dur-base) var(--ease); }
+.btn:hover .arrow { transform: translateX(0.25rem); }
+.btn:active { transform: scale(0.98); }
+.btn:focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.1875rem; }
+.btn-primary   { background: var(--white); color: var(--purple-500); }
+.btn-primary:hover { background: var(--cream); color: var(--purple-600); }
+.btn-secondary { background: transparent; color: var(--white); border-color: rgba(255, 255, 255, 0.72); }
+.btn-secondary:hover { border-color: var(--white); background: rgba(255, 255, 255, 0.08); }
+.btn-on-light  { background: var(--purple-500); color: var(--white); }
+.btn-on-light:hover { background: var(--purple-600); color: var(--white); }
+.btn-outline-light { background: transparent; color: var(--ink); border-color: var(--ink); }
+.btn-outline-light:hover { background: var(--ink); color: var(--white); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; scroll-behavior: auto !important; }
+}
