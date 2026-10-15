@@ -3,7 +3,10 @@
 ```bash
 python3 build.py        # writes dist/
 python3 serve.py 4175   # http://localhost:4175
+./deploy.sh             # publish to https://applauselab.github.io/stefanoffEcommerce/
 ```
+
+Staging on GitHub Pages: `deploy.sh` builds with `--base=/stefanoffEcommerce` (every root-relative URL gets the sub-path, `<html data-base>` tells `site.js`, pages are `noindex`), pushes `dist/` to the `gh-pages` branch, then rebuilds for the local server. Source lives on `main`; the repo's `.gitignore` is an allow-list, so research, audit, screenshots and backups stay local. When the site moves to stefanoff.bg, build without `--base`.
 
 - `build.py`: page templates. Product, project and contact copy is imported from `../redesign/build.py` (single source).
 - `src/site.css`, `src/site.js`: components and behaviour. All values come from `../styleguide/tokens.css` (copied into dist on build).
