@@ -1465,3 +1465,15 @@ form.quote[hidden] { display: none; }
 .bag-sum .bl-sub { font-size: var(--fs-small); color: var(--text-on-dark-2); font-feature-settings: "locl" 0; }
 .bag-sum .bl-sum { font-size: var(--fs-small); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .bag-sum .bag-total { padding-top: var(--s-3); border-top: 1px solid var(--rule-on-dark); }
+
+/* Scroll lock (menu, chat, bag; see lockScroll in site.js): the scrollbar's width comes back as padding, so nothing
+   behind the drawer moves, and the drawer still reaches the window edge. */
+html.scroll-locked { overflow: hidden; }
+html.scroll-locked body { padding-right: var(--lock-pad, 0px); }
+html.scroll-locked .nav, html.scroll-locked .nav-peek { right: var(--lock-pad, 0px); }
+html.scroll-locked .lang.t-tabs { right: calc(var(--gutter) + var(--lock-pad, 0px)); }
+html.scroll-locked .chat-tab { right: var(--lock-pad, 0px); }
+html.scroll-locked .toast { right: calc(var(--gutter) + var(--lock-pad, 0px)); }
+@media (max-width: 900px) {
+  html.scroll-locked .sticky-cta, html.scroll-locked .sticky-buy { right: calc(var(--gutter) + var(--s-24) + var(--lock-pad, 0px)); }
+}

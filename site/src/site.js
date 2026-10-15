@@ -35,6 +35,15 @@
       sampleMsg: "We would like a sample." },
   }[root.lang === "en" ? "en" : "bg"];
 
+  // Scroll lock for the menu, chat and bag. Hiding the scrollbar would widen the page and shift everything behind the
+  // drawer, so the scrollbar's width is measured first and given back as padding to the page and the fixed bars.
+  const locks = new Set();
+  const lockScroll = (who, on) => {
+    if (on && !locks.size) root.style.setProperty("--lock-pad", `${Math.max(0, innerWidth - root.getBoundingClientRect().width)}px`);
+    on ? locks.add(who) : locks.delete(who);
+    root.classList.toggle("scroll-locked", locks.size > 0);
+  };
+
   // Smooth, weighted wheel scroll (touch stays native). Off under reduced motion.
   let lenis = null;
   if (!reduced && window.Lenis) {
@@ -213,7 +222,7 @@
       menu.toggleAttribute("inert", !open);
       btn.setAttribute("aria-expanded", String(open));
       btn.textContent = open ? L.close : L.menu;
-      document.body.style.overflow = open ? "hidden" : "";
+      lockScroll("menu", open);
       if (lenis) open ? lenis.stop() : lenis.start();
       nav.classList.toggle("menu-open", open);
       if (open) menu.querySelector("a")?.focus({ preventScroll: true });
@@ -577,7 +586,7 @@
       bd.inert = !next;
       behindBag.forEach((el) => { el.inert = next; });
       openers.forEach((o) => o.setAttribute("aria-expanded", String(next)));
-      document.body.style.overflow = next ? "hidden" : "";
+      lockScroll("bag", next);
       if (lenis) next ? lenis.stop() : lenis.start();
       if (next) {
         hideToast();
@@ -887,7 +896,7 @@
       drawer.inert = !open;
       behind.forEach((el) => { el.inert = open; });
       toggles.forEach((b) => b.setAttribute("aria-expanded", String(open)));
-      document.body.style.overflow = open ? "hidden" : "";
+      lockScroll("chat", open);
       if (lenis) open ? lenis.stop() : lenis.start();
       if (open) {
         closeMenu();
