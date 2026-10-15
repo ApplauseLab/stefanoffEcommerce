@@ -11,7 +11,10 @@ p { margin: 0; }
 :focus-visible { outline: 0.125rem solid var(--focus); outline-offset: 0.1875rem; }
 /* Wide screens and browser zoom-out: above 1600 px the root size grows with the window (1rem = 1vw),
    and every size is in rem, so the whole layout scales up instead of floating in a fixed column. */
-html { font-size: max(100%, 1vw); }
+/* Root size. Phones and tablets: the browser default (16 px). From 1100 px the whole layout is proportional to the
+   window (1rem = 1 % of its width), never below 13 px: a 1440 px laptop gets 14.4 px, a 1920 screen 19.2 px. */
+html { font-size: 100%; }
+@media (min-width: 1100px) { html { font-size: max(81.25%, 1vw); } }
 .wrap { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 var(--gutter); }
 .skip { position: absolute; left: var(--s-4); top: 0; translate: 0 -150%; z-index: 200; background: var(--white); color: var(--purple-500); padding: var(--s-2) var(--s-4); border-radius: var(--r-pill); font-weight: 600; }
 .skip:focus { translate: 0 var(--s-4); }
@@ -627,7 +630,7 @@ html.lang-arriving main, html.lang-arriving .footer { animation: lang-in 400ms v
    from the edges. Sequence per drawing: it turns out from its anchor with a small spring, the pen draws
    stem -> leaves -> hips -> crowns, then the leaves fill green and the hips ripen to red. Then a slow sway.
    Each drawing's stem base (--bx, --by, from its json) sits on its anchor (--ax, --ay). Desktop nav only. */
-:root { --hip-line: #F4A47F; --leaf-fill: #4A8236; --leaf-line: #C4DFA6; --pen: 380ms; --easy-ease: cubic-bezier(0.33, 0, 0.67, 1); }
+:root { --hip-line: #F4A47F; --leaf-fill: #4A8236; --leaf-line: #C4DFA6; --pen: 570ms; --easy-ease: cubic-bezier(0.33, 0, 0.67, 1); }
 .cta-grow { position: relative; display: inline-flex; isolation: isolate; }
 .cta-grow .nav-cta { position: relative; z-index: 2; }
 .sprig { --h: 3.5rem; position: absolute; z-index: 1; height: var(--h); width: calc(var(--h) * var(--ar)); pointer-events: none;
@@ -645,17 +648,17 @@ html.lang-arriving main, html.lang-arriving .footer { animation: lang-in 400ms v
 .sprig .leaf { stroke: var(--leaf-line); fill: var(--leaf-fill); stroke-width: calc(var(--sw, 2.4) * 0.5); }
 .sprig .rib { stroke: var(--leaf-line); stroke-width: calc(var(--sw, 2.4) * 0.45); }
 .cta-grow.is-grown .sprig { opacity: 1; rotate: var(--r1);
-  transition: rotate 520ms var(--easy-ease) var(--d), opacity 60ms linear var(--d); }
+  transition: rotate 780ms var(--easy-ease) var(--d), opacity 90ms linear var(--d); }
 .cta-grow.is-grown .sprig path { stroke-dashoffset: 0;
   transition: stroke-dashoffset var(--pen) var(--easy-ease) calc(var(--d) + var(--o) * var(--pen) * 0.7); }
 /* colour arrives once each shape is drawn: leaves first, then the hips ripen from orange-red to deep red */
 .cta-grow.is-grown .sprig .leaf { fill-opacity: 1;
   transition: stroke-dashoffset var(--pen) var(--easy-ease) calc(var(--d) + var(--o) * var(--pen) * 0.7),
-    fill-opacity 280ms var(--easy-ease) calc(var(--d) + (var(--o) * 0.7 + 0.7) * var(--pen)); }
+    fill-opacity 420ms var(--easy-ease) calc(var(--d) + (var(--o) * 0.7 + 0.7) * var(--pen)); }
 .cta-grow.is-grown .sprig .fruit { fill-opacity: 1;
   transition: stroke-dashoffset var(--pen) var(--easy-ease) calc(var(--d) + var(--o) * var(--pen) * 0.7),
-    fill-opacity 420ms var(--easy-ease) calc(var(--d) + (var(--o) * 0.7 + 0.8) * var(--pen)); }
-.cta-grow.is-grown .sprig svg { animation: sprig-breeze 4.6s var(--easy-ease) calc(var(--d) + 1000ms) infinite; transform-origin: calc(var(--bx) * 100%) calc(var(--by) * 100%); }
+    fill-opacity 630ms var(--easy-ease) calc(var(--d) + (var(--o) * 0.7 + 0.8) * var(--pen)); }
+.cta-grow.is-grown .sprig svg { animation: sprig-breeze 4.6s var(--easy-ease) calc(var(--d) + 1500ms) infinite; transform-origin: calc(var(--bx) * 100%) calc(var(--by) * 100%); }
 @keyframes sprig-breeze { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(2.5deg); } }
 /* corners. Top: only ~30 px above the pill, so they lean out sideways; bottom ones hang down and out.
    Right side is mirrored so leaves and hips always face outward. */

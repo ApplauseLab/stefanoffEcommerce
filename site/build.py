@@ -96,8 +96,8 @@ def chapter(num, label=""):
 
 
 NAV_LEFT = [("/produkti.html", "Продукти", "produkti"), ("/fermata.html", "Фермата", "fermata"), ("/sertifikati.html", "Сертификати", "sertifikati")]
-NAV_RIGHT = [("/proekti.html", "Проекти", "proekti"), ("/zapitvane.html#kontakt", "Контакти", "kontakt")]
-MENU = NAV_LEFT + NAV_RIGHT + [("/zapitvane.html", "Запитване", "zapitvane")]
+NAV_RIGHT = [("/proekti.html", "Проекти", "proekti")]
+MENU = NAV_LEFT + NAV_RIGHT + [("/zapitvane.html#kontakt", "Контакти", "kontakt"), ("/zapitvane.html", "Запитване", "zapitvane")]
 
 
 # --------------------------------------------------------------------------- layout
@@ -111,9 +111,9 @@ def emblem(cls="", alt=""):
 
 
 def contact_icons(extra=""):
-    """Chat and phone side by side. Rendered twice: in nav-right on wide screens, alone below 1300 px."""
+    """Chat and bag side by side in the nav below 1300 px (wide screens: the chat tab on the right edge, the bag in nav-right)."""
     return (f'<div class="nav-contact{(" " + extra) if extra else ""}"><button class="nav-chat" type="button" data-chat aria-controls="chat" aria-expanded="false" aria-label="Чат с нас">{ico("chat-circle-dots")}</button>'
-            f'{bag_btn() if "nav-contact-m" in extra else ""}<a class="nav-call" href="{PHONE_HREF}" aria-label="Обадете се: {PHONE}">{ico("phone")}</a></div>')
+            f'{bag_btn() if "nav-contact-m" in extra else ""}</div>')
 
 
 def _inline(name):
@@ -185,7 +185,7 @@ def layout(*, key, path, title, desc, body, hero=False, schema=None, og="/img/he
     <button class="nav-menu-btn" type="button" aria-expanded="false" aria-controls="menu">Меню</button>
     <div class="nav-side nav-left">{left}</div>
     <a class="nav-logo" href="/" aria-label="Стефанов НП, начало"><span class="logo-fly" id="logoFly">{emblem("", "Stefanoff")}</span></a>
-    <div class="nav-side nav-right">{right}<span class="cta-grow" data-cta-grow>{SPRIGS}<a class="btn btn-primary nav-cta" href="/zapitvane.html">Поискайте оферта</a></span>{bag_btn()}<a class="nav-call" href="{PHONE_HREF}" aria-label="Обадете се: {PHONE}">{ico("phone")}</a></div>
+    <div class="nav-side nav-right">{right}<span class="cta-grow" data-cta-grow>{SPRIGS}<a class="btn btn-primary nav-cta" href="/zapitvane.html">Поискайте оферта</a></span>{bag_btn()}</div>
     {contact_icons("nav-contact-m")}
   </div>
 </header>
@@ -370,7 +370,6 @@ def docs():
 
 # --------------------------------------------------------------------------- pages
 def page_home():
-    eu = "".join(f"""<a class="rv" href="/proekti.html#{p['id']}"><span class="code">{p['code']}</span><span class="t-sub">{p['short']}</span><span class="amt">{p['amount_short']}</span>{ico('arrow-right')}</a>""" for p in PROJECTS)
     schema = {"@context": "https://schema.org", "@type": "Organization", "name": "Стефанов НП ООД", "url": SITE, "logo": f"{SITE}/brand/stefanoff-logo-colour.png",
               "email": EMAIL, "telephone": "+359888229537", "sameAs": ["https://facebook.com/stefanoff.bg"],
               "address": {"@type": "PostalAddress", "addressLocality": "с. Бозвелийско", "addressRegion": "Варна", "addressCountry": "BG"}}
@@ -468,13 +467,6 @@ def page_home():
     <div class="tiles-more rv"><a class="btn btn-secondary" href="/produkti.html">Всички продукти <span class="count">{len(PRODUCTS)}</span> {ARROW}</a></div></div>
 </section>
 
-<section class="section" aria-labelledby="num-h">
-  <div class="wrap">
-    {figures('Реколта 2024<br>в <span class="accent">цифри</span>', "По данни от био сертификата и лабораторния анализ.",
-             [("55,8 ха", "шипка с био сертификат"), ("74,9 т", "прогнозна реколта шипка"), ("14,1 т", "прогнозна реколта лавандула"), ("0", "открити остатъци от пестициди"), ("2,3 км", "дължина на Хемските порти")])}
-  </div>
-</section>
-
 <section class="section tight" aria-labelledby="how-h">
   <div class="wrap">
     <div class="head rv"><h2 id="how-h" class="t-h2">Как да поръчате</h2></div>
@@ -483,13 +475,6 @@ def page_home():
       <div class="step rv d1">{ico("file-pdf")}<span class="t-sub">Получете оферта и документи</span><p class="t-body">Цена, спецификация, био сертификат и анализ от последната реколта.</p></div>
       <div class="step rv d2">{ico("check-circle")}<span class="t-sub">Мостра и доставка</span><p class="t-body">При нужда изпращаме {tbc("мостра")}. След потвърждение уточняваме опаковка и транспорт.</p></div>
     </div>
-  </div>
-</section>
-
-<section class="section tight" aria-labelledby="eu-h">
-  <div class="wrap">
-    <div class="head rv"><h2 id="eu-h" class="t-h2">Инвестираме<br>в <span class="accent">капацитет</span></h2><p class="t-body">Около 3,79 млн. лв. публично съфинансиране за напояване, техника, хладилно съхранение, автоматизация и соларна енергия.</p></div>
-    <div class="eu">{eu}</div>
   </div>
 </section>
 
@@ -805,6 +790,7 @@ def page_product(p):
 
 
 def page_farm():
+    eu = "".join(f"""<a class="rv" href="/proekti.html#{p['id']}"><span class="code">{p['code']}</span><span class="t-sub">{p['short']}</span><span class="amt">{p['amount_short']}</span>{ico('arrow-right')}</a>""" for p in PROJECTS)
     body = f"""<section class="section tight"><div class="wrap">
   <div class="intro" style="margin-bottom:var(--section)">
     <div class="copy rv">
@@ -822,9 +808,13 @@ def page_farm():
     <div class="place rv d2">{ico("plant")}<span class="t-sub">Климентово</span><p class="t-small">Насаждения от шипка. Община Аксаково.</p></div>
   </div>
   <div style="margin-bottom:var(--section)">
-    {figures('Реколта 2024<br>в <span class="accent">цифри</span>', f'По данни от био сертификата за 2024 г. {tbc("Площите в преход се потвърждават.")}',
-             [("55,8 ха", "шипка с био сертификат"), ("5,15 ха", "лавандула с био сертификат"), ("74,9 т", "прогнозна реколта шипка"), ("14,1 т", "прогнозна реколта лавандула")])}
+    {figures('Реколта 2024<br>в <span class="accent">цифри</span>', f'По данни от био сертификата и лабораторния анализ. {tbc("Площите в преход се потвърждават.")}',
+             [("55,8 ха", "шипка с био сертификат"), ("5,15 ха", "лавандула с био сертификат"), ("74,9 т", "прогнозна реколта шипка"), ("14,1 т", "прогнозна реколта лавандула"), ("0", "открити остатъци от пестициди"), ("2,3 км", "дължина на Хемските порти")])}
   </div>
+  <section aria-labelledby="eu-h" style="margin-bottom:var(--section)">
+    <div class="head rv"><h2 id="eu-h" class="t-h2">Инвестираме<br>в <span class="accent">капацитет</span></h2><p class="t-body">Около 3,79 млн. лв. публично съфинансиране за напояване, техника, хладилно съхранение, автоматизация и соларна енергия.</p></div>
+    <div class="eu">{eu}</div>
+  </section>
   <div class="people">
     <div class="copy rv">
       <h2 class="t-h2">Хората зад фермата</h2>
