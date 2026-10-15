@@ -90,11 +90,6 @@ ZONES = [
 
 
 
-def chapter(num, label=""):
-    lab = f'<span class="chapter-label">{label}</span>' if label else ""
-    return f'<p class="chapter{"" if label else " no-label"} rv"><span class="chapter-num">{num}</span>{lab}</p>'
-
-
 NAV_LEFT = [("/produkti.html", "Продукти", "produkti"), ("/fermata.html", "Фермата", "fermata"), ("/sertifikati.html", "Сертификати", "sertifikati")]
 NAV_RIGHT = [("/proekti.html", "Проекти", "proekti")]
 MENU = NAV_LEFT + NAV_RIGHT + [("/zapitvane.html#kontakt", "Контакти", "kontakt"), ("/zapitvane.html", "Запитване", "zapitvane")]
@@ -699,7 +694,7 @@ def season_html(rows):
 def product_more(p):
     m = PRODUCT_MORE[p["slug"]]
     facts = "".join(f'<div class="fact"><dt>{lbl}</dt><dd>{val}</dd></div>' for val, lbl in m["facts"])
-    steps = "".join(f'<li class="pstep rv d{i % 4}"><span class="pstep-ico">{ico(ic)}</span><span class="pstep-n">{i + 1}</span><h3 class="t-sub">{t}</h3><p class="t-small">{d}</p></li>' for i, (ic, t, d) in enumerate(m["process"]))
+    steps = "".join(f'<li class="pstep rv d{i % 4}"><span class="pstep-ico">{ico(ic)}</span><h3 class="t-sub">{t}</h3><p class="t-small">{d}</p></li>' for i, (ic, t, d) in enumerate(m["process"]))
     terms = "".join(f'<div class="term">{ico(ic)}<dt>{t}</dt><dd>{d}</dd></div>' for ic, t, d in TERMS)
     return f"""<section class="section band pmore" aria-labelledby="proc-h">
   <div class="wrap">
